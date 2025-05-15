@@ -16,7 +16,7 @@ export async function getTasks(req, res) {
 
 export async function createTask(req, res) {
   try {
-    await newTask(req.body.title, req.body.description, req.body.status);
+    await newTask(req.body.title, req.body.description);
     res.status(201).json({ message: "Task created successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });

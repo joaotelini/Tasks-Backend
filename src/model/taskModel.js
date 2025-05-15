@@ -5,10 +5,10 @@ export const getAllTask = async () => {
   return result;
 };
 
-export const newTask = async (title, description, status) => {
+export const newTask = async (title, description) => {
   const [result] = await connection.execute(
-    "INSERT INTO task (title, description, status, created_at) VALUES (?,?,?, NOW())",
-    [title, description, status]
+    'INSERT INTO task (title, description, status, created_at) VALUES (?,?,"pending", NOW())',
+    [title, description]
   );
   return result;
 };

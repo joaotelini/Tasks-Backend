@@ -1,24 +1,13 @@
 const validStatus = ["pending", "completed"];
 
 export const sendTaskMiddleware = (req, res, next) => {
-  const { title, status } = req.body;
+  const { title } = req.body;
 
-  if (!title || !status) {
-    return res.status(400).json({ message: "Some req are empty" });
+  if (!title) {
+    return res.status(400).json({ message: "'title' is a requirement" });
   }
 
-  if (!validStatus.includes(status)) {
-    return res.status(400).json({
-      message:
-        "Invalid status value. Please, just send 'pending' or 'completed'",
-    });
-  }
-
-  if (
-    typeof title !== "string" ||
-    typeof status !== "string" ||
-    typeof description !== "string"
-  ) {
+  if (typeof title !== "string" || typeof description !== "string") {
     return res.status(400).json({ message: "body req must be strings" });
   }
 
