@@ -7,10 +7,6 @@ export const sendTaskMiddleware = (req, res, next) => {
     return res.status(400).json({ message: "'title' is a requirement" });
   }
 
-  if (typeof title !== "string" || typeof description !== "string") {
-    return res.status(400).json({ message: "body req must be strings" });
-  }
-
   next();
 };
 
