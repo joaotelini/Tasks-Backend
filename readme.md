@@ -15,31 +15,42 @@ Este projeto é uma API REST para gerenciar tarefas, com o objetivo de fixar um 
 ### **GET**
 
 - **`/tasks`**  
-  Retorna a lista de todas as tarefas cadastradas no banco de dados.
-
+   Retorna a lista de todas as tarefas cadastradas no banco de dados.
+  ```json
+  {
+    "id": 12,
+    "title": "Exemplo de Tarefa",
+    "description": "Exemplo de descricao",
+    "status": "pending",
+    "created_at": "2025-05-15T20:32:42.000Z"
+  }
+  ```
 
 ### **POST**
 
 - **`/tasks`**  
   Cria uma nova tarefa.  
-  **Body:**  
+  **Body:**
   ```json
-  { 
+  {
     "title": "Exemplo de Tarefa",
-    "description": "Exemplo de descricao",
+    "description": "Exemplo de descricao"
   }
+  ```
 
 ### **PUT**
 
 - **`/tasks/:id/`**
-Atualiza o status de uma tarefa, identificada pelo `id` passado na URL.
-**Body:**
+  Atualiza o status de uma tarefa, identificada pelo `id` passado na URL.
+  **Body:**
+
 ```json
 {
   "status": "completed"
 }
 ```
+
 ### **DELETE**
 
 - **`/tasks/:id/`**
-Remove a tarefa, identificada pelo `id` passado na URL.
+  Remove a tarefa, identificada pelo `id` passado na URL.
