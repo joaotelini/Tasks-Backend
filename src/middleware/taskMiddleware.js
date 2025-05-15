@@ -1,16 +1,29 @@
-export const sendTaskMiddleware = (req, res, next) => {
-  const { name, status } = req.body;
+const validStatus = ["pending", "completed"];
 
-  if (!name || !status) {
-    return res.status(400).json({ message: "Name and status are required" });
+export const sendTaskMiddleware = (req, res, next) => {
+  const { title, status } = req.body;
+
+  if (!title || !status) {
+    return res.status(400).json({ message: "Some req are empty" });
   }
 
-  if (typeof name !== "string" || typeof status !== "string") {
-    return res.status(400).json({ message: "Name and status must be strings" });
+  if (!validStatus.includes(status)) {
+    return res.status(400).json({
+      message:
+        "Invalid status value. Please, just send 'pending' or 'completed'",
+    });
+  }
+
+  if (
+    typeof title !== "string" ||
+    typeof status !== "string" ||
+    typeof description !== "string"
+  ) {
+    return res.status(400).json({ message: "body req must be strings" });
   }
 
   next();
-}
+};
 
 export const verifyIdMiddleware = (req, res, next) => {
   const { id } = req.params;
@@ -22,13 +35,13 @@ export const verifyIdMiddleware = (req, res, next) => {
   if (isNaN(id)) {
     return res.status(400).json({ message: "ID must be a number" });
   }
-  
+
   if (id <= 0) {
     return res.status(400).json({ message: "ID must be greater than 0" });
   }
 
   next();
-}
+};
 
 export const editTaskMiddleware = (req, res, next) => {
   const { status } = req.body;
@@ -37,11 +50,12 @@ export const editTaskMiddleware = (req, res, next) => {
     return res.status(400).json({ message: "Status is required" });
   }
 
-  const validStatuses = ["done", "doing", "todo"];
-
-  if (!validStatuses.includes(status)) {
-    return res.status(400).json({ message: "Invalid status value. Please, just send 'done, doing or todo'" });
+  if (!validStatus.includes(status)) {
+    return res.status(400).json({
+      message:
+        "Invalid status value. Please, just send 'pending' or 'completed'",
+    });
   }
 
   next();
-}
+};

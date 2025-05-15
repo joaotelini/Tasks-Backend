@@ -5,18 +5,11 @@ export const getAllTask = async () => {
   return result;
 };
 
-export const newTask = async (name, status) => {
+export const newTask = async (title, description, status) => {
   const [result] = await connection.execute(
-    "INSERT INTO task (name, status, created_at) VALUES (?,?, NOW())",
-    [name, status]
+    "INSERT INTO task (title, description, status, created_at) VALUES (?,?,?, NOW())",
+    [title, description, status]
   );
-  return result;
-};
-
-export const getTaskById = async (id) => {
-  const [result] = await connection.execute("SELECT * FROM task WHERE id = ?", [
-    id,
-  ]);
   return result;
 };
 

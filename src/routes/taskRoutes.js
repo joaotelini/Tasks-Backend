@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getTasks,
-  getTaskId,
   createTask,
   editSTask,
   deleteTaskbyId,
@@ -16,7 +15,6 @@ import {
 const router = express.Router();
 
 router.get("/", getTasks);
-router.get("/:id", verifyIdMiddleware, getTaskId);
 router.put("/:id", verifyIdMiddleware, editTaskMiddleware, editSTask);
 router.post("/", sendTaskMiddleware, createTask);
 router.delete("/:id", verifyIdMiddleware, deleteTaskbyId);

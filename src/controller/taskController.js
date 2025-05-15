@@ -1,7 +1,6 @@
 import {
   getAllTask,
   newTask,
-  getTaskById,
   editStatusTask,
   deleteTask,
 } from "../model/taskModel.js";
@@ -15,21 +14,9 @@ export async function getTasks(req, res) {
   }
 }
 
-export async function getTaskId(req, res) {
-  try {
-    const task = await getTaskById(req.params.id);
-    if (task.length === 0) {
-      return res.status(400).json({ message: "Task not exist" });
-    }
-    res.status(200).json(task);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-}
-
 export async function createTask(req, res) {
   try {
-    await newTask(req.body.name, req.body.status);
+    await newTask(req.body.title, req.body.description, req.body.status);
     res.status(201).json({ message: "Task created successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
