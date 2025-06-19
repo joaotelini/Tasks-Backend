@@ -16,23 +16,28 @@ export async function getTasks(req, res) {
 
 export async function createTask(req, res) {
   try {
-    await newTask(req.body.title, req.body.description);
-    res.status(201).json({ message: "Task created successfully" });
+    const { title } = req.body;
+    const task = await newTask(title);
+    res.status(201).json({ message: "Task created successfully", task });
   } catch (error) {
+    console.error("Erro ao criar tarefa:", error);
     res.status(500).json({ message: error.message });
   }
 }
 
-export async function editSTask(req, res) {
+export async function editStatusTaskController(req, res) {
   try {
-    const task = await editStatusTask(req.params.id, req.body.status);
+    const { id } = req.params;
+    const { status } = req.body;
+    const task = await editStatusTask(id, status);
 
     if (task.affectedRows === 0) {
-      return res.status(400).json({ message: "Task not exist" });
+      return res.status(404).json({ message: "Task not found" });
     }
 
-    res.status(200).json({ message: "Status updated successfully" });
+    res.status(200).json({ message: "Status updated successfully", task });
   } catch (error) {
+    console.error("Erro ao editar status da tarefa:", error);
     res.status(500).json({ message: error.message });
   }
 }
