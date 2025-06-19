@@ -1,14 +1,8 @@
 import connection from "../config/connection.js";
 
 export const getAllTask = async () => {
-  const [result] = await connection.execute("SELECT * FROM task");
-  return result;
-};
-
-export const newTask = async (title, description) => {
   const [result] = await connection.execute(
-    'INSERT INTO task (title, description, status, created_at) VALUES (?,?,"pending", NOW())',
-    [title, description]
+    "SELECT id, title, status FROM task"
   );
   return result;
 };
@@ -18,7 +12,15 @@ export const editStatusTask = async (id, status) => {
     "UPDATE task SET status = ? WHERE id = ?",
     [status, id]
   );
-  return result;
+  return { id: Number(id), status, affectedRows: result.affectedRows };
+};
+
+export const newTask = async (title) => {
+  const [result] = await connection.execute(
+    "INSERT INTO task (title, status) VALUES (?, false)",
+    [title]
+  );
+  return { id: result.insertId, title, status: false };
 };
 
 export const deleteTask = async (id) => {
