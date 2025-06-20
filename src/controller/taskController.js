@@ -29,7 +29,8 @@ export async function editStatusTaskController(req, res) {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const task = await editStatusTask(id, status);
+    const statusBoolean = Boolean(status);
+    const task = await editStatusTask(id, statusBoolean);
 
     if (task.affectedRows === 0) {
       return res.status(404).json({ message: "Task not found" });

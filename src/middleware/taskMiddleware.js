@@ -15,7 +15,7 @@ export const sendTaskMiddleware = (req, res, next) => {
 export const editTaskMiddleware = (req, res, next) => {
   const { status } = req.body;
 
-  if (!status) {
+  if (status === undefined) {
     return res.status(400).json({ message: "'status' is a requirement" });
   }
 
