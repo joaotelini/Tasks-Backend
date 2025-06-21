@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.get("/", getTasks);
 router.post("/", sendTaskMiddleware, createTask);
-router.put(
+router.patch(
   "/:id",
   verifyIdMiddleware,
   editTaskMiddleware,
