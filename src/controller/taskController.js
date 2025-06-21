@@ -24,19 +24,18 @@ export async function createTask(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-
 export async function editStatusTaskController(req, res) {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const statusBoolean = Boolean(status);
-    const task = await editStatusTask(id, statusBoolean);
+
+    const task = await editStatusTask(id, status);
 
     if (task.affectedRows === 0) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ message: "Task não encontrada" });
     }
 
-    res.status(200).json({ message: "Status updated successfully", task });
+    res.status(200).json({ message: "Status atualizado com sucesso", task });
   } catch (error) {
     console.error("Erro ao editar status da tarefa:", error);
     res.status(500).json({ message: error.message });
