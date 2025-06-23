@@ -31,14 +31,8 @@ export const editTaskMiddleware = (req, res, next) => {
 export const verifyIdMiddleware = (req, res, next) => {
   const { id } = req.params;
 
-  const numericId = Number(id);
-
   if (!id) {
     return res.status(400).json({ message: "ID is required" });
-  }
-
-  if (!id || isNaN(numericId) || numericId <= 0) {
-    return res.status(400).json({ message: "ID must be a positive number" });
   }
 
   next();
