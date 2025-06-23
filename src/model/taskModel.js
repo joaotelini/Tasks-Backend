@@ -1,31 +1,46 @@
-import connection from "../config/connection.js";
+import { getDataBase } from "../config/connection.js";
+import { ObjectId } from "mongodb";
 
-export const getAllTask = async () => {
-  const [result] = await connection.execute(
-    "SELECT id, title, status FROM task"
-  );
-  return result;
+export const getAllTasks = async () => {
+  const db = getDataBase();
+
+  console.log("📄 Documentos encontrados:");
+
+  return await db.collection("tasks").find().toArray();
 };
 
 export const editStatusTask = async (id, status) => {
-  const [result] = await connection.execute(
-    "UPDATE task SET status = ? WHERE id = ?",
-    [status, id]
-  );
-  return { id: Number(id), status, affectedRows: result.affectedRows };
+  const db = getDataBase();
+  const collection = db.collection("tasks");
+  const filter = { _id: new ObjectId(String(id)) };
+  const updateStatus = { $set: { status } };
+  const result = await collection.updateOne(filter, updateStatus);
+
+  console.log("Status atualizado", result);
+
+  return result;
 };
 
-export const newTask = async (title) => {
-  const [result] = await connection.execute(
-    "INSERT INTO task (title, status) VALUES (?, false)",
-    [title]
-  );
-  return { id: result.insertId, title, status: false };
+export const createTask = async (title) => {
+  const db = getDataBase();
+  const doc = {
+    title,
+    status: false,
+  };
+
+  const result = await db.collection("tasks").insertOne(doc);
+
+  console.log("Task criada", result);
+
+  return result.insertedId;
 };
 
 export const deleteTask = async (id) => {
-  const [result] = await connection.execute("DELETE FROM task WHERE id = ?", [
-    id,
-  ]);
-  return result;
+  const db = getDataBase();
+  const result = await db
+    .collection("tasks")
+    .deleteOne({ _id: new ObjectId(String(id)) });
+  console.log(`Task deletada do id ${id}`, result);
+
+  return result.deletedCount;
 };
