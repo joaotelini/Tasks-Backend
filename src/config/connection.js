@@ -1,11 +1,20 @@
-import mysql from "mysql2/promise";
+import { MongoClient } from "mongodb";
 import "dotenv/config";
 
-const connection = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-});
+const uri = process.env.MONGO_URI;
+const client = new MongoClient(uri);
 
-export default connection;
+export const connectMongo = async () => {
+  try {
+    await client.connect();
+    console.log("✅ Conectado ao MongoDB Atlas com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao conectar ou buscar dados:", error);
+  }
+};
+
+export const getDataBase = () => {
+  console.log("📄 Documentos encontrados:");
+
+  return client.db("todoList");
+};
