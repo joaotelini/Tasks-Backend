@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  getTasks,
-  createTask,
-  deleteTaskbyId,
+  getTasksController,
+  createTaskController,
+  deleteTaskController,
   editStatusTaskController,
 } from "../controller/taskController.js";
 
@@ -14,14 +14,14 @@ import {
 
 const router = express.Router();
 
-router.get("/", getTasks);
-router.post("/", sendTaskMiddleware, createTask);
+router.get("/", getTasksController);
+router.post("/", sendTaskMiddleware, createTaskController);
 router.patch(
   "/:id",
   verifyIdMiddleware,
   editTaskMiddleware,
   editStatusTaskController
 );
-router.delete("/:id", verifyIdMiddleware, deleteTaskbyId);
+router.delete("/:id", verifyIdMiddleware, deleteTaskController);
 
 export default router;
