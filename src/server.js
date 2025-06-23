@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import taskRouter from "./routes/taskRoutes.js";
-import { connectMongo } from "./config/taskConnection.js";
+import authRouter from "./routes/authRoutes.js";
 
 const port = process.env.PORT || 3333;
 const app = express();
@@ -11,13 +11,16 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/tasks", taskRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.status(200).json({
+    status: "OK",
+    message: "API is running",
+    timestamp: new Date().toISOString(),
+  });
 });
 
-connectMongo().then(() => {
-  app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-  });
+app.listen(port, () => {
+  console.log(`🚀 Server is running on http://localhost:${port}`);
 });
