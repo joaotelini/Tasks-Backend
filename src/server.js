@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import taskRouter from "./routes/taskRoutes.js";
+import { connectMongo } from "./config/connection.js";
 
 const port = process.env.PORT || 3333;
 const app = express();
@@ -15,6 +16,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+connectMongo().then(() => {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
 });
