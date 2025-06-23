@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import taskRouter from "./routes/taskRoutes.js";
-import { connectMongo } from "./config/connection.js";
+import { connectMongo } from "./config/taskConnection.js";
 
 const port = process.env.PORT || 3333;
 const app = express();
