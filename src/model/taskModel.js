@@ -1,4 +1,4 @@
-import { getDataBase } from "../config/taskConnection.js";
+import { getDataBase } from "../config/mongoConnection.js";
 import { ObjectId } from "mongodb";
 
 export const getAllTasks = async () => {
