@@ -6,9 +6,8 @@ Este projeto é uma API REST para gerenciar tarefas, com o objetivo de fixar um 
 
 - **Node.js**
 - **Express**
-- **MySQL**
-- **Postman**
-- **Beekeper Studio**
+- **MondoDB**
+- **Insomnia**
 
 ## Funcionalidades da API
 
@@ -17,13 +16,13 @@ Este projeto é uma API REST para gerenciar tarefas, com o objetivo de fixar um 
 - **`/tasks`**  
    Retorna a lista de todas as tarefas cadastradas no banco de dados.
   ```json
-  {
-    "id": 12,
-    "title": "Exemplo de Tarefa",
-    "description": "Exemplo de descricao",
-    "status": "pending",
-    "created_at": "2025-05-15T20:32:42.000Z"
-  }
+   [
+   	{
+   		"_id": "6858aec56de818cdd3a89f48",
+   		"title": "Migrar de mysql para mongo",
+   		"status": false
+   	}
+   ]
   ```
 
 ### **POST**
@@ -32,21 +31,18 @@ Este projeto é uma API REST para gerenciar tarefas, com o objetivo de fixar um 
   Cria uma nova tarefa.  
   **Body:**
   ```json
-  {
-    "title": "Exemplo de Tarefa",
-    "description": "Exemplo de descricao"
-  }
+   { "title": "Migrar de mysql para mongo" }
   ```
 
-### **PUT**
+### **PATCH**
 
 - **`/tasks/:id/`**
-  Atualiza o status de uma tarefa, identificada pelo `id` passado na URL.
+  Atualiza o status de uma tarefa, identificada pelo `id` passado na URL e pelo `status` passado no body.
   **Body:**
 
 ```json
 {
-  "status": "completed"
+  "status": "true" || "false"
 }
 ```
 
