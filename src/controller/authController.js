@@ -29,11 +29,7 @@ export const loginUserController = async (req, res) => {
     res.status(200).json({
       status: "success",
       token: token,
-      user: {
-        _id: user._id,
-        fullname: user.fullname,
-        email: user.email,
-      },
+      user: user._id,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
