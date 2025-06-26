@@ -24,12 +24,14 @@ export const loginUserController = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: user._id.toString() }, secret, {
+      expiresIn: "1h",
+    });
 
     res.status(200).json({
       status: "success",
-      token: token,
-      user: user._id,
+      token,
+      user: user._id.toString(),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -42,7 +44,7 @@ export const registerUserController = async (req, res) => {
     const user = await registerAuth(fullname, email, password);
     res.status(201).json({
       status: "success",
-      user: { _id: user.insertedId, fullname, email },
+      user: { _id: user.insertedId.toString(), fullname, email },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -53,9 +55,9 @@ export const getUsersController = async (req, res) => {
   try {
     const users = await getUsersModel();
 
-    // Retorna todos os usuarios, sem informações sensíveis como password
+    // Retorna todos os usuários, sem senha
     const safeUsers = users.map(({ _id, fullname, email }) => ({
-      _id,
+      _id: _id.toString(),
       fullname,
       email,
     }));
@@ -82,7 +84,7 @@ export const getUserController = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      user: { _id, fullname, email },
+      user: { _id: _id.toString(), fullname, email },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
