@@ -4,8 +4,6 @@ import { ObjectId } from "mongodb";
 export const getAllTasks = async () => {
   const db = getDataBase();
 
-  console.log("📄 Documentos encontrados:");
-
   return await db.collection("tasks").find().toArray();
 };
 
@@ -15,8 +13,6 @@ export const editStatusTask = async (id, status) => {
   const filter = { _id: new ObjectId(String(id)) };
   const updateStatus = { $set: { status } };
   const result = await collection.updateOne(filter, updateStatus);
-
-  console.log("Status atualizado", result);
 
   return result;
 };
@@ -30,8 +26,6 @@ export const createTask = async (title) => {
 
   const result = await db.collection("tasks").insertOne(doc);
 
-  console.log("Task criada", result);
-
   return result.insertedId;
 };
 
@@ -40,7 +34,6 @@ export const deleteTask = async (id) => {
   const result = await db
     .collection("tasks")
     .deleteOne({ _id: new ObjectId(String(id)) });
-  console.log(`Task deletada do id ${id}`, result);
 
   return result.deletedCount;
 };
