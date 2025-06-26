@@ -7,8 +7,9 @@ import {
 
 export async function getTasksController(req, res) {
   try {
-    const task = await getAllTasks();
-    res.status(200).json(task);
+    const userId = req.userId;
+    const tasks = await getAllTasks(userId);
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -17,25 +18,31 @@ export async function getTasksController(req, res) {
 export async function createTaskController(req, res) {
   try {
     const { title } = req.body;
-    const task = await createTask(title);
-    res.status(201).json({ message: "Task created successfully", task });
+    const userId = req.userId;
+
+    const taskId = await createTask(title, userId);
+    res.status(201).json({ message: "Task created successfully", taskId });
   } catch (error) {
     console.error("Erro ao criar tarefa:", error);
     res.status(500).json({ message: error.message });
   }
 }
+
 export async function editStatusTaskController(req, res) {
   try {
     const { id } = req.params;
     const { status } = req.body;
+    const userId = req.userId;
 
-    const task = await editStatusTask(id, status);
+    const task = await editStatusTask(id, userId, status);
 
-    if (task.affectedRows === 0) {
-      return res.status(404).json({ message: "Task não encontrada" });
+    if (task.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ message: "Task not found or does not belong to user" });
     }
 
-    res.status(200).json({ message: "Status atualizado com sucesso", task });
+    res.status(200).json({ message: "Task status edited successfully", task });
   } catch (error) {
     console.error("Erro ao editar status da tarefa:", error);
     res.status(500).json({ message: error.message });
@@ -44,10 +51,17 @@ export async function editStatusTaskController(req, res) {
 
 export async function deleteTaskController(req, res) {
   try {
-    const taskDeleted = await deleteTask(req.params.id);
+    const { id } = req.params;
+    const userId = req.userId;
+
+    const taskDeleted = await deleteTask(id, userId);
+
     if (taskDeleted === 0) {
-      return res.status(400).json({ message: "Task not exist" });
+      return res
+        .status(404)
+        .json({ message: "Task not found or does not belong to user" });
     }
+
     res.status(200).json({ message: "Task deleted successfully", taskDeleted });
   } catch (error) {
     res.status(500).json({ message: error.message });
