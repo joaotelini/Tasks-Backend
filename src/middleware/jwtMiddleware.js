@@ -18,7 +18,14 @@ export const jwtMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secret);
-    req.user = decoded;
+
+    // Usa userId pois foi criado assim no token
+    req.userId = decoded.userId;
+
+    if (!req.userId) {
+      return res.status(401).json({ message: "User ID not found in token" });
+    }
+
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });
