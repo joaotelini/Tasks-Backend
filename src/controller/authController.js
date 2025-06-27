@@ -12,18 +12,9 @@ const secret = process.env.SECRET;
 
 export const loginUserController = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
+
     const user = await loginAuth(email);
-
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid password" });
-    }
-
     const token = jwt.sign({ userId: user._id.toString() }, secret, {
       expiresIn: "1h",
     });
@@ -35,8 +26,13 @@ export const loginUserController = async (req, res) => {
       maxAge: 60 * 60 * 1000,
     });
 
+    // produção secure: true \ sameSite: "none"
+    // desenvolvimento secure: process.env.NODE_ENV === "production" \
+    // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax","
+
     res.status(200).json({
       status: "success",
+      message: "Login realizado com sucesso",
       token,
       user: user._id.toString(),
     });

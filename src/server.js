@@ -15,15 +15,19 @@ const allowOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
+
       if (!origin || allowOrigins.indexOf(origin) !== -1) {
+        console.log("✅ Origin permitida!");
         callback(null, true);
       } else {
+        console.log("❌ Origin NÃO permitida!");
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -35,9 +39,11 @@ app.get("/", (req, res) => {
     status: "OK",
     message: "API is running",
     timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
 });
