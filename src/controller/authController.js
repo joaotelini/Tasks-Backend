@@ -28,6 +28,13 @@ export const loginUserController = async (req, res) => {
       expiresIn: "1h",
     });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: "production",
+      sameSite: "Strict",
+      maxAge: 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       status: "success",
       token,

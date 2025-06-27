@@ -1,25 +1,16 @@
 import jwt from "jsonwebtoken";
 
 const secret = process.env.SECRET;
-if (!secret) {
-  throw new Error("JWT secret is not defined in environment variables");
-}
 
 export const jwtMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.headers.authorization?.split(" ")[1] || req.cookies.token;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .json({ message: "Bearer token not found in header" });
+  if (!token) {
+    return res.status(401).json({ message: "Token not provided" });
   }
-
-  const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, secret);
-
-    // Usa userId pois foi criado assim no token
     req.userId = decoded.userId;
 
     if (!req.userId) {
