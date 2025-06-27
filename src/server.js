@@ -9,7 +9,8 @@ const port = process.env.PORT || 3333;
 const app = express();
 const allowOrigins = [
   "http://localhost:3000",
-  "https://todolist-telini.vercel.app",
+  "https://todolist-telini.vercel.app/login",
+  "https://todolist-telini.vercel.app/tasklist",
 ];
 
 app.use(
