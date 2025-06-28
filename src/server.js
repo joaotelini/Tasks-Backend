@@ -14,16 +14,7 @@ const allowOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-
-      if (!origin || allowOrigins.indexOf(origin) !== -1) {
-        console.log("✅ Origin permitida!");
-        callback(null, true);
-      } else {
-        console.log("❌ Origin NÃO permitida!");
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: allowOrigins,
     credentials: true,
   })
 );

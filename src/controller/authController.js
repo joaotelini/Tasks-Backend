@@ -5,7 +5,6 @@ import {
   getUserIdModel,
 } from "../model/authModel.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import "dotenv/config";
 
 const secret = process.env.SECRET;
@@ -25,6 +24,8 @@ export const loginUserController = async (req, res) => {
       sameSite: "none",
       maxAge: 60 * 60 * 1000,
     });
+
+    console.log("token no cookie: ", token);
 
     // produção secure: true \ sameSite: "none"
     // desenvolvimento secure: process.env.NODE_ENV === "production" \
