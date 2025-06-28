@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import "dotenv/config";
 import taskRouter from "./routes/taskRoutes.js";
 import authRouter from "./routes/authRoutes.js";
@@ -7,17 +6,24 @@ import cookieParser from "cookie-parser";
 
 const port = process.env.PORT || 3333;
 const app = express();
-const allowOrigins = [
-  "http://localhost:3000",
-  "https://todolist-telini.vercel.app",
-];
 
-app.use(
-  cors({
-    origin: allowOrigins,
-    credentials: true,
-  })
-);
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://todolist-telini.vercel.app",
+  ];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +41,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Server is running on http://localhost:${port}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`🚀 API is running`);
 });
